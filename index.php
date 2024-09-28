@@ -5,7 +5,7 @@
 				$image = wp_get_attachment_image_src($id_image, 'full');
 			?>
 <div class="bredcam_area"
-    style="background:url(<?php echo $image[0]; ?>);background-color:#5aaef2;background-position:  center;background-size:  cover;">
+    style="background:url(<?php echo $image[0]; ?>);">
     <div class="container">
         <div class="bredcam">
             <h5><?php wp_title(' ', ' '); ?></h5>
