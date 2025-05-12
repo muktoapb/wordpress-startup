@@ -74,43 +74,49 @@ add_theme_support( 'editor-font-sizes', array(
         'slug'      => 'huge',
     ),
 ) );
-// Add support for custom line heights in the block editor
-add_theme_support( 'editor-line-height', array(
-    array(
-        'name'  => esc_attr__( '1.2', 'mukto' ),
-        'slug'  => 'line-height-1-2',
-        'value' => 1.2,
-    ),
-    array(
-        'name'  => esc_attr__( '1.5', 'mukto' ),
-        'slug'  => 'line-height-1-5',
-        'value' => 1.5,
-    ),
-    array(
-        'name'  => esc_attr__( '2', 'mukto' ),
-        'slug'  => 'line-height-2',
-        'value' => 2,
-    ),
-) );
-// Add support for custom spacing in the block editor
-add_theme_support( 'editor-spacing', array(
-    array(
-        'name'  => esc_attr__( 'Small', 'mukto' ),
-        'slug'  => 'spacing-small',
-        'value' => 8,
-    ),
-    array(
-        'name'  => esc_attr__( 'Medium', 'mukto' ),
-        'slug'  => 'spacing-medium',
-        'value' => 16,
-    ),
-    array(
-        'name'  => esc_attr__( 'Large', 'mukto' ),
-        'slug'  => 'spacing-large',
-        'value' => 32,
-    ),
-) );
 
 // editor styles
 add_theme_support( 'editor-styles' );
 add_editor_style( 'assets/css/editor-style.css' );
+
+
+
+/**
+ * Add a custom block category.
+ */
+function mukto_block_category( $categories, $post ) {
+	$custom_category = array(
+        'slug' => 'mukto',
+        'title' => 'Mukto',
+        'icon' => 'awards',
+        'position' => 1,
+    );
+
+    // Extract position from the custom category array.
+    $position = $custom_category['position'];
+
+    // Remove position from the custom category array.
+    unset( $custom_category['position'] );
+
+    // Insert the custom category at the desired position.
+    array_splice( $categories, $position, 0, array( $custom_category ) );
+
+    return $categories;
+}
+add_filter( 'block_categories_all', 'mukto_block_category', 10, 2);
+
+/**
+ * Register ACF blocks.
+ *
+ */
+
+function mukto_register_acf_blocks() {
+    $blocks = array(
+        'rich-text',
+    );
+    foreach ( $blocks as $block ) {
+        register_block_type( __DIR__ . '/../blocks/' . $block );
+    }
+}
+add_action( 'init', 'mukto_register_acf_blocks' );
+
